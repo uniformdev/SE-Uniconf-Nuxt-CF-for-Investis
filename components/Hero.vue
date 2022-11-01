@@ -1,12 +1,31 @@
 <script lang="ts" setup>
-// TODO: Add component: ComponentInstance as a prop
-defineProps<{
+import type { ComponentInstance } from '@uniformdev/canvas';
+
+let props = defineProps<{
+  component: ComponentInstance;
   title: string;
   text: string;
   buttonText?: string;
   buttonLink?: string;
   image?: string;
+  entry?: any;
 }>();
+
+const entry = props.entry;
+let title = props.title;
+let text = props.text;
+let buttonText = props.buttonText;
+let buttonLink = props.buttonLink;
+let image;
+
+if (entry) {
+  title = entry.fields.title;
+  text = entry.fields.description;
+  buttonText = entry.fields.buttonText;
+  buttonLink = entry.fields.buttonLink;
+  image = entry.fields.image;
+  image = image?.fields.file.url;
+}
 </script>
 
 <template>

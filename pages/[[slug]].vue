@@ -1,17 +1,27 @@
 <script lang="ts" setup>
 import { resolveRenderer } from '../components/componentMapping';
-import { useCompositionInstance } from '@uniformdev/canvas-vue';
+import { useCompositionInstance, createApiEnhancer } from '@uniformdev/canvas-vue';
 
 const route = useRoute();
 
 const fullSlug = `/${route.params.slug ?? ''}`;
 const { $useComposition } = useNuxtApp();
-
-const { data, pending, error } = await $useComposition({ slug: fullSlug });
+const slug = fullSlug;
+const { data: rawComposition } = await $useComposition({ slug });
+const { data: enhancedComposition, pending, error } = await useEnhance(
+  rawComposition.value?.composition,
+  slug as string 
+);
 
 const { composition } = useCompositionInstance({
-  composition: data.value?.composition,
+  composition: enhancedComposition.value.composition,
+  enhance: createApiEnhancer({
+    apiUrl: "/api/enhance",
+  }),
 });
+
+
+
 const pageTitle = computed(() => composition.value?._name);
 </script>
 

@@ -11,6 +11,7 @@ import Footer from './Footer.vue';
 
 const mapping = {
   hero: Hero,
+  herocf: Hero, // Contentful version of hero component
   talklist: TalkList,
   talk: Talk,
   whyattend: WhyAttend,
